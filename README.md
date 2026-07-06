@@ -26,16 +26,6 @@ Windows 安装时只需要下载并运行 `Mineradio-1.1.1-Setup.exe`。macOS Ap
 3. macOS 提示无法验证开发者时，可以在 Finder 里右键 `Mineradio.app` 选择 `打开`，或到 `系统设置 > 隐私与安全性` 允许打开。
 4. 如果杀毒软件明确显示木马、高危或已经隔离，不要强行运行；删除该文件后重新从蓝奏云或 GitHub Release 下载，仍然异常请带截图反馈给作者。
 
-## 作者支持
-
-如果 Mineradio 陪你多听了一首歌，也欢迎请作者一杯咖啡。
-
-[查看完整支持页](./docs/SUPPORT.md)
-
-![Mineradio 作者支持渠道](./docs/assets/support/mineradio-author-support-poster.png)
-
-1.1.1 的核心目标是把 Mineradio 重新整理成一份可公开下载的纯净安装版：默认视觉参数来自内置「默认测试」用户存档，首次启动就进入统一的视觉手感；3D 歌单架、歌词层级、用户存档和后台性能策略都在同一轮里收口。
-
 ## 当前版本
 
 当前版本：`1.1.1`
