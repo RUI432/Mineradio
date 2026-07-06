@@ -42,6 +42,10 @@ function resolveRcedit(projectDir) {
 
 module.exports = async function afterPack(context) {
   if (context.electronPlatformName !== 'win32') return;
+  if (process.platform !== 'win32') {
+    console.log('  • skipping Mineradio rcedit resource injection on non-Windows host');
+    return;
+  }
 
   const appName = context.packager.appInfo.productFilename || 'Mineradio';
   const exePath = path.join(context.appOutDir, `${appName}.exe`);
