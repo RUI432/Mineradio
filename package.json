@@ -5,11 +5,14 @@
   "description": "沉浸式音乐播放器，融合天气电台、歌词舞台、粒子视觉和 3D 歌单架。",
   "author": "Mineradio",
   "main": "desktop/main.js",
+  "packageManager": "pnpm@11.0.7",
   "private": true,
   "scripts": {
     "start": "electron .",
     "build:win": "electron-builder --win nsis",
-    "build:win:dir": "electron-builder --win dir"
+    "build:win:dir": "electron-builder --win dir",
+    "build:mac": "electron-builder --mac dmg zip --x64 --arm64",
+    "build:mac:dir": "electron-builder --mac dir --x64 --arm64"
   },
   "build": {
     "appId": "com.mineradio.desktop",
@@ -45,6 +48,32 @@
           ]
         }
       ]
+    },
+    "mac": {
+      "category": "public.app-category.music",
+      "icon": "build/icon.icns",
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "artifactName": "Mineradio-${version}-${arch}.${ext}"
+    },
+    "dmg": {
+      "title": "Mineradio ${version}",
+      "artifactName": "Mineradio-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,

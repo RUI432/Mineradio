@@ -2,7 +2,7 @@
 
 ![Mineradio 暗场启动页](./docs/assets/readme/cinema-beat-smoke.png)
 
-Mineradio 是一款 Windows 桌面沉浸式音乐播放器，把天气电台、搜索播放、歌词舞台、粒子视觉和 3D 歌单架组合成一个更接近现场感的私人音乐空间。
+Mineradio 是一款桌面沉浸式音乐播放器，支持 Windows 和 macOS，把天气电台、搜索播放、歌词舞台、粒子视觉和 3D 歌单架组合成一个更接近现场感的私人音乐空间。
 
 ## 立即下载 Windows 安装包
 
@@ -63,6 +63,8 @@ Windows 用户可以在 GitHub Releases 中下载安装包。
 
 正式分发以 `Mineradio-1.1.1-Setup.exe` 为准，不建议直接下载 `win-unpacked` 目录作为正式分发包。安装包会创建桌面快捷方式；直接运行打包版 `Mineradio.exe` 时，应用也会在首次启动时补创建桌面快捷方式。
 
+macOS 用户可以下载对应架构的 `Mineradio-版本-arm64.dmg` 或 `Mineradio-版本-x64.dmg`。Apple Silicon 机型优先使用 `arm64`，Intel Mac 使用 `x64`。未签名构建首次打开时如果被系统拦截，可以在 Finder 中右键应用选择“打开”，或到“系统设置 > 隐私与安全性”允许打开。
+
 已经安装过旧版本的用户，建议卸载旧版本、隔离旧安装包后，再使用 `v1.1.1` 安装包纯净安装。
 
 ## 开发运行
@@ -71,9 +73,12 @@ Windows 用户可以在 GitHub Releases 中下载安装包。
 npm install
 npm start
 npm run build:win
+npm run build:mac
 ```
 
-桌面版入口由 Electron 主进程加载本地服务。`npm run build:win` 会生成 Windows NSIS 安装包，产物位于 `dist/`。
+如果本机使用 pnpm，也可以执行 `pnpm install`、`pnpm start`、`pnpm run build:mac`。
+
+桌面版入口由 Electron 主进程加载本地服务。`npm run build:win` 会生成 Windows NSIS 安装包，`npm run build:mac` 会生成 macOS x64/arm64 DMG/ZIP 安装包，产物位于 `dist/`。
 
 ## 更新机制
 

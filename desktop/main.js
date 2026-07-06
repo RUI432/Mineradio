@@ -32,6 +32,8 @@ const MIN_WINDOWED_HEIGHT = 540;
 const APP_NAME = 'Mineradio';
 const APP_USER_MODEL_ID = 'com.mineradio.desktop';
 const APP_ICON_ICO = path.join(__dirname, '..', 'build', 'icon.ico');
+const APP_ICON_PNG = path.join(__dirname, '..', 'build', 'icon.png');
+const APP_WINDOW_ICON = process.platform === 'win32' ? APP_ICON_ICO : APP_ICON_PNG;
 const NETEASE_LOGIN_PARTITION = 'persist:mineradio-netease-login';
 const NETEASE_LOGIN_URL = 'https://music.163.com/#/login';
 const QQ_LOGIN_PARTITION = 'persist:mineradio-qqmusic-login';
@@ -47,9 +49,13 @@ const CHROMIUM_PERFORMANCE_SWITCHES = [
   ['disable-background-timer-throttling'],
   ['disable-renderer-backgrounding'],
   ['disable-backgrounding-occluded-windows'],
-  ['force_high_performance_gpu'],
-  ['use-angle', 'd3d11'],
 ];
+if (process.platform === 'win32') {
+  CHROMIUM_PERFORMANCE_SWITCHES.push(
+    ['force_high_performance_gpu'],
+    ['use-angle', 'd3d11'],
+  );
+}
 for (const [name, value] of CHROMIUM_PERFORMANCE_SWITCHES) {
   if (value == null) app.commandLine.appendSwitch(name);
   else app.commandLine.appendSwitch(name, value);
@@ -417,7 +423,7 @@ async function openNeteaseMusicLoginWindow(owner) {
       autoHideMenuBar: true,
       title: '网易云音乐登录',
       backgroundColor: '#111111',
-      icon: APP_ICON_ICO,
+      icon: APP_WINDOW_ICON,
       webPreferences: {
         partition: NETEASE_LOGIN_PARTITION,
         contextIsolation: true,
@@ -519,7 +525,7 @@ async function openQQMusicLoginWindow(owner) {
       autoHideMenuBar: true,
       title: 'QQ 音乐登录',
       backgroundColor: '#111111',
-      icon: APP_ICON_ICO,
+      icon: APP_WINDOW_ICON,
       webPreferences: {
         partition: QQ_LOGIN_PARTITION,
         contextIsolation: true,
@@ -696,6 +702,17 @@ function toggleFullscreen(win) {
   }
   windowFullscreenActive = true;
   win.setFullScreen(true);
+  sendWindowState(win);
+}
+
+function toggleMaximize(win) {
+  if (!win || win.isDestroyed()) return;
+  if (win.isFullScreen() || windowFullscreenActive) {
+    exitFullscreenToWindow(win);
+    return;
+  }
+  if (win.isMaximized()) win.unmaximize();
+  else win.maximize();
   sendWindowState(win);
 }
 
@@ -1102,7 +1119,7 @@ ipcMain.handle('desktop-window-minimize', (event) => {
 });
 
 ipcMain.handle('desktop-window-toggle-maximize', (event) => {
-  toggleFullscreen(getSenderWindow(event));
+  toggleMaximize(getSenderWindow(event));
 });
 
 ipcMain.handle('desktop-window-toggle-fullscreen', (event) => {
@@ -1350,14 +1367,16 @@ async function createWindow() {
     minWidth: 960,
     minHeight: 540,
     show: false,
-    frame: false,
+    frame: process.platform === 'darwin',
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : undefined,
+    trafficLightPosition: process.platform === 'darwin' ? { x: 18, y: 18 } : undefined,
     fullscreen: false,
     transparent: true,
     backgroundColor: '#00000000',
     hasShadow: true,
     autoHideMenuBar: true,
     title: APP_NAME,
-    icon: APP_ICON_ICO,
+    icon: APP_WINDOW_ICON,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
